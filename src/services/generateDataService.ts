@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
 
 class GenerateDataService {
   private messageList = [
@@ -40,12 +41,13 @@ class GenerateDataService {
     'Лавочкин А.В.',
     'Ольшанская Е.Г.',
   ];
-  private getRandomNumber = (min: number, max: number) => {
+
+  getRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   generateEvent = () => {
-    const id = this.getRandomNumber(1, 1000);
+    const id = uuidv4();
     const message =
       this.messageList[this.getRandomNumber(0, this.messageList.length - 1)];
     const photoUrl = faker.internet.avatar();
