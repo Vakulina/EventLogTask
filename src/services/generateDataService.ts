@@ -33,6 +33,7 @@ class GenerateDataService {
     { name: 'ИБП', equipmen: 'UPS' },
     { name: 'Трансформатор', equipmen: 'Transformer' },
     { name: 'ЛВС', equipmen: 'LVS' },
+    { name: '', equipmen: '' },
   ];
   private executorList = [
     'Смирнов В.А.',

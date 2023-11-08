@@ -2,14 +2,9 @@ export type EventType = {
   message: string;
   photoUrl: string;
   time: string;
-  degree: {
-    name: string;
-    degree: string;
-  };
-  equipment?: {
-    name: string;
-    equipmen: string;
-  };
+  degree: string;
+  equipment?: string;
   executor: string;
   id: string;
+  isUnread:boolean;
 };

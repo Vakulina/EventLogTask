@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { generateDataService } from 'services/generateDataService';
-import { EventType } from 'shared/types/Events';
+import { EventDTO } from 'shared/models';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { degreeCellTemplate, prepareLog, rowClass } from './utils';
 
 export const LogsPage = () => {
-  const [logs, setLogs] = useState<EventType[]>([]);
+  const [logs, setLogs] = useState<EventDTO[]>([]);
   const [messagesCount, setMessagesCount] = useState<number>(0);
   const timerRef = useRef<number | undefined>(undefined);
   const logsRef = useRef(logs);
@@ -19,14 +22,28 @@ export const LogsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (messagesCount > 5) clearTimeout(timerRef.current);
+    if (messagesCount > 1000) clearTimeout(timerRef.current);
   }, [messagesCount]);
 
   return (
     <>
-      {logs.map((item) => (
-        <div key={item.id}>{item.message}</div>
-      ))}
+      <DataTable
+        value={logs.map((item) => prepareLog(item))}
+        rowClassName={rowClass}
+        showGridlines
+        stripedRows
+        paginator
+        rows={5}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        sortField='time'
+        sortOrder={-1}
+        tableStyle={{ minWidth: '50rem' }}>
+        <Column field='time' header='Дата' sortable />
+        <Column field='degree' header='Важность' body={degreeCellTemplate} />
+        <Column field='equipment' header='Оборудование' />
+        <Column field='message' header='Сообщение' />
+        <Column field='executor' header='Ответственный' />
+      </DataTable>
     </>
   );
 };
