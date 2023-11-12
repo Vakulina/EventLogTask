@@ -3,6 +3,7 @@ import { generateDataService } from 'services/generateDataService';
 import { EventDTO } from 'shared/models';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import './LogsPage.css';
 import { degreeCellTemplate, prepareLog, rowClass } from './utils';
 
 export const LogsPage = () => {
@@ -25,6 +26,7 @@ export const LogsPage = () => {
     if (messagesCount > 1000) clearTimeout(timerRef.current);
   }, [messagesCount]);
 
+
   return (
     <>
       <DataTable
@@ -34,15 +36,36 @@ export const LogsPage = () => {
         stripedRows
         paginator
         rows={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        rowsPerPageOptions={[5, 10]}
         sortField='time'
         sortOrder={-1}
-        tableStyle={{ minWidth: '50rem' }}>
-        <Column field='time' header='Дата' sortable />
-        <Column field='degree' header='Важность' body={degreeCellTemplate} />
-        <Column field='equipment' header='Оборудование' />
-        <Column field='message' header='Сообщение' />
-        <Column field='executor' header='Ответственный' />
+        tableStyle={{ width: '50rem' }}
+        emptyMessage='Журнал событий пуст'
+        style={{
+          minHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          border: '1px solid LightGray',
+        }}>
+        <Column field='time' header='Дата' style={{ width: '10%' }} sortable />
+        <Column
+          field='degree'
+          header='Важность'
+          body={degreeCellTemplate}
+          style={{ width: '20%' }}
+        />
+        <Column
+          field='equipment'
+          header='Оборудование'
+          style={{ width: '20%' }}
+        />
+        <Column field='message' header='Сообщение' style={{ width: '28%' }} />
+        <Column
+          field='executor'
+          header='Ответственный'
+          style={{ width: '22%' }}
+        />
       </DataTable>
     </>
   );

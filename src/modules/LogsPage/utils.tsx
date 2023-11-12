@@ -13,6 +13,7 @@ export const prepareLog = (log: EventDTO): EventType => {
   export const rowClass = (data: EventType) => {
     return {
       'bg-primary': data.isUnread,
+      'row':true
     };
   };
  const getDegreeTag = (status: string) => {
