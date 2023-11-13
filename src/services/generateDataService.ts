@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { EventDTO } from 'shared/models';
 import { v4 as uuidv4 } from 'uuid';
 
 class GenerateDataService {
@@ -47,7 +48,7 @@ class GenerateDataService {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  generateEvent = () => {
+  generateEvent = ():EventDTO => {
     const id = uuidv4();
     const message =
       this.messageList[this.getRandomNumber(0, this.messageList.length - 1)];

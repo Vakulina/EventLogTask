@@ -1,0 +1,23 @@
+.logs {
+  &__row {
+    height: 14vh;
+    opacity: 0.6;
+    background-color: var(--bg-primary);
+    cursor: none;
+  }
+  &__row:focus-visible {
+    outline: none;
+  }
+  &__row:focus {
+    color: #495057;
+  }
+  &__row_bg-primary {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  &__row_bg-primary:focus {
+    outline: 0.15rem solid #c7d2fe;
+    outline-offset: -0.15rem;
+  }
+}

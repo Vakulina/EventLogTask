@@ -6,38 +6,38 @@ export const prepareLog = (log: EventDTO): EventType => {
   return {
     ...log,
     degree: log.degree.name,
-    equipment: log.equipment?.name||'',
-    isUnread:true,
+    equipment: log.equipment?.name || '',
+    isUnread: true,
   };
 };
-  export const rowClass = (data: EventType) => {
-    return {
-      'bg-primary': data.isUnread,
-      'row':true
-    };
+export const rowClass = (data: EventType) => {
+  return {
+    'logs__row_bg-primary': data.isUnread,
+    'logs__row': true,
   };
- const getDegreeTag = (status: string) => {
-    switch (status) {
-      case 'Критическая':
-        return 'danger';
+};
+const getDegreeTag = (status: string) => {
+  switch (status) {
+    case 'Критическая':
+      return 'danger';
 
-      case 'Высокая':
-        return 'warning';
+    case 'Высокая':
+      return 'warning';
 
-      case 'Низкая':
-        return 'info';
+    case 'Низкая':
+      return 'info';
 
-      case 'renewal':
-        return null;
-    }
-  };
+    case 'renewal':
+      return null;
+  }
+};
 
-    export const degreeCellTemplate = (rowData: EventType) => {
-      return (
-        <Tag
-          value={rowData.degree}
-          severity={getDegreeTag(rowData.degree)}
-          rounded
-        />
-      );
-    };
+export const degreeCellTemplate = (rowData: EventType) => {
+  return (
+    <Tag
+      value={rowData.degree}
+      severity={getDegreeTag(rowData.degree)}
+      rounded
+    />
+  );
+};

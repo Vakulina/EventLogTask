@@ -1,39 +1,75 @@
 import { useEffect, useRef, useState } from 'react';
 import { generateDataService } from 'services/generateDataService';
-import { EventDTO } from 'shared/models';
-import { DataTable } from 'primereact/datatable';
+import {
+  DataTable,
+  DataTableSelectionSingleChangeEvent,
+} from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import './LogsPage.css';
+import './LogsPage.scss';
 import { degreeCellTemplate, prepareLog, rowClass } from './utils';
+import { EventType } from 'shared/types/Events';
+import { useInterval, useEventListener } from 'primereact/hooks';
+import { InputText } from 'primereact/inputtext';
 
 export const LogsPage = () => {
-  const [logs, setLogs] = useState<EventDTO[]>([]);
+  const [logs, setLogs] = useState<EventType[]>([]);
   const [messagesCount, setMessagesCount] = useState<number>(0);
-  const timerRef = useRef<number | undefined>(undefined);
+  const [selectedLog, setSelectedLog] = useState<null | EventType>(null);
+
   const logsRef = useRef(logs);
   logsRef.current = logs;
 
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setLogs([...logsRef.current, generateDataService.generateEvent()]);
+  useInterval(
+    () => {
+      setLogs([
+        ...logsRef.current,
+        prepareLog(generateDataService.generateEvent()),
+      ]);
       setMessagesCount((prev) => prev + 1);
-    }, 2500);
+    },
+    2500,
+    messagesCount < 1000
+  );
 
-    return () => clearTimeout(timerRef.current);
-  }, []);
+  const [bindSpaceDown, unbindSpaceDown] = useEventListener({
+    type: 'keydown',
+    listener: (e) => {
+      if (e instanceof KeyboardEvent && e.code === 'Space') onKeyDown();
+    },
+  });
 
   useEffect(() => {
-    if (messagesCount > 1000) clearTimeout(timerRef.current);
-  }, [messagesCount]);
+    bindSpaceDown();
+    return () => {
+      unbindSpaceDown();
+    };
+  }, [bindSpaceDown, unbindSpaceDown]);
 
+  const onKeyDown = () => {
+    const newLogs = logs.map((log) => {
+      if (log.id === selectedLog?.id) log.isUnread = false;
+      return log;
+    });
+    setLogs(newLogs);
+  };
+
+  const onSelectionChange = (
+    e: DataTableSelectionSingleChangeEvent<EventType[]>
+  ) => {
+    if (e.value !== null && e.value !== undefined) {
+      setSelectedLog(e.value);
+    }
+  };
 
   return (
-    <>
+    <div className='logs'>
+      <div className='logs__search'>
+        <InputText placeholder='Поиск по тесту сообщения' />
+      </div>
       <DataTable
-        value={logs.map((item) => prepareLog(item))}
+        value={logs}
         rowClassName={rowClass}
         showGridlines
-        stripedRows
         paginator
         rows={5}
         rowsPerPageOptions={[5, 10]}
@@ -41,6 +77,11 @@ export const LogsPage = () => {
         sortOrder={-1}
         tableStyle={{ width: '50rem' }}
         emptyMessage='Журнал событий пуст'
+        selection={selectedLog}
+        onSelectionChange={onSelectionChange}
+        dataKey='id'
+        selectionMode='single'
+        metaKeySelection={true}
         style={{
           minHeight: '90vh',
           display: 'flex',
@@ -67,6 +108,6 @@ export const LogsPage = () => {
           style={{ width: '22%' }}
         />
       </DataTable>
-    </>
+    </div>
   );
 };
