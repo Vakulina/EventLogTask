@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { generateDataService } from 'services/generateDataService';
 import {
   DataTable,
@@ -10,11 +10,18 @@ import { degreeCellTemplate, prepareLog, rowClass } from './utils';
 import { EventType } from 'shared/types/Events';
 import { useInterval, useEventListener } from 'primereact/hooks';
 import { InputText } from 'primereact/inputtext';
+import { FilterMatchMode } from 'primereact/api';
 
 export const LogsPage = () => {
   const [logs, setLogs] = useState<EventType[]>([]);
   const [messagesCount, setMessagesCount] = useState<number>(0);
   const [selectedLog, setSelectedLog] = useState<null | EventType>(null);
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [filters, setFilters] = useState({
+    global: { value: '', matchMode: FilterMatchMode.CONTAINS },
+    degree: { value: '', matchMode: FilterMatchMode.EQUALS },
+    executor: { value: '', matchMode: FilterMatchMode.STARTS_WITH },
+  });
 
   const logsRef = useRef(logs);
   logsRef.current = logs;
@@ -61,12 +68,25 @@ export const LogsPage = () => {
     }
   };
 
+  const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e?.target?.value;
+    let _filters = { ...filters };
+    _filters['global'].value = value;
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
+
   return (
     <div className='logs'>
       <div className='logs__search'>
-        <InputText placeholder='Поиск по тесту сообщения' />
+        <InputText
+          value={globalFilterValue}
+          onChange={onGlobalFilterChange}
+          placeholder='Поиск'
+        />
       </div>
       <DataTable
+        filters={filters}
         value={logs}
         rowClassName={rowClass}
         showGridlines
@@ -76,7 +96,7 @@ export const LogsPage = () => {
         sortField='time'
         sortOrder={-1}
         tableStyle={{ width: '50rem' }}
-        emptyMessage='Журнал событий пуст'
+        emptyMessage='Событий не найдено'
         selection={selectedLog}
         onSelectionChange={onSelectionChange}
         dataKey='id'
