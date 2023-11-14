@@ -13,20 +13,30 @@ export const prepareLog = (log: EventDTO): EventType => {
 export const rowClass = (data: EventType) => {
   return {
     'logs__row_bg-primary': data.isUnread,
-    'logs__row': true,
+    logs__row: true,
   };
 };
-const getDegreeTag = (status: string) => {
+export const getDegreeTag = (status: string) => {
   switch (status) {
     case 'Критическая':
       return 'danger';
-
     case 'Высокая':
       return 'warning';
-
     case 'Низкая':
       return 'info';
+    case 'renewal':
+      return null;
+  }
+};
 
+export const getDegreeValue = (status: string) => {
+  switch (status) {
+    case 'danger':
+      return 'Критическая';
+    case 'warning':
+      return 'Высокая';
+    case 'info':
+      return 'Низкая';
     case 'renewal':
       return null;
   }
@@ -40,4 +50,16 @@ export const degreeCellTemplate = (rowData: EventType) => {
       rounded
     />
   );
+};
+export const executorFilterItemTemplate = (option: string) => {
+  return (
+    <div className='flex align-items-center gap-2'>
+      <span>{option}</span>
+    </div>
+  );
+};
+export const getExecutorsList = (events: EventType[]): string[] => {
+  const result: Set<string> = new Set();
+  events.map((item) => result.add(item.executor));
+  return [...result];
 };

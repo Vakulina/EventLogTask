@@ -1,9 +1,11 @@
 .logs {
   &__row {
-    height: 14vh;
+    height: 15vh;
     opacity: 0.6;
     background-color: var(--bg-primary);
     cursor: none;
+    td{
+    padding: 5px 15px;}
   }
   &__row:focus-visible {
     outline: none;
@@ -20,4 +22,6 @@
     outline: 0.15rem solid #c7d2fe;
     outline-offset: -0.15rem;
   }
+
+
 }
