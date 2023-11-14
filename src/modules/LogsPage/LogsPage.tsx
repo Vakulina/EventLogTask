@@ -20,7 +20,9 @@ import { FilterMatchMode } from 'primereact/api';
 import { Dropdown } from 'primereact/dropdown';
 import { PrimeIcons } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
+import { SelectButton } from 'primereact/selectbutton';
 type DeegreeType = 'Высокая' | 'Критическая' | 'Низкая';
+type PageFormat = 'Таблица' | 'Карточки';
 
 type FilterType = {
   global: { value: string; matchMode: FilterMatchMode.CONTAINS };
@@ -29,6 +31,7 @@ type FilterType = {
 };
 
 export const LogsPage = () => {
+  const [pageFormat, setPageFormat] = useState<PageFormat>('Таблица');
   const [logs, setLogs] = useState<EventType[]>([]);
   const [messagesCount, setMessagesCount] = useState<number>(0);
   const [selectedLog, setSelectedLog] = useState<null | EventType>(null);
@@ -113,6 +116,7 @@ export const LogsPage = () => {
       />
     );
   };
+
   const executorRowFilterTemplate = (
     options: ColumnFilterElementTemplateOptions
   ) => {
@@ -138,71 +142,86 @@ export const LogsPage = () => {
 
   return (
     <div className='logs'>
-      <div className='logs__search'>
+      <div className='logs__header'>
         <InputText
           value={filters.global.value}
           onChange={(e) => onGlobalFilterChange('global', e?.target?.value)}
           placeholder='Поиск'
         />
+
+        <SelectButton
+          value={pageFormat}
+          onChange={(e) => setPageFormat(e.value)}
+          options={['Таблица', 'Карточки']}
+        />
       </div>
-      <DataTable
-        filters={filters}
-        value={logs}
-        rowClassName={rowClass}
-        showGridlines
-        paginator
-        rows={5}
-        rowsPerPageOptions={[5, 10]}
-        sortField='time'
-        sortOrder={-1}
-        tableStyle={{ width: '50rem' }}
-        emptyMessage='Событий не найдено'
-        selection={selectedLog}
-        onSelectionChange={onSelectionChange}
-        dataKey='id'
-        selectionMode='single'
-        metaKeySelection={true}
-        style={{
-          minHeight: '90vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          border: '1px solid LightGray',
-        }}
-        filterIcon={PrimeIcons.FILTER}>
-        <Column field='time' header='Дата' style={{ width: '10%' }} sortable />
-        <Column
-          field='degree'
-          header='Важность'
-          body={degreeCellTemplate}
-          style={{ width: '20%' }}
-          filter
-          showFilterMenu
-          filterElement={degreeRowFilterTemplate}
-          showFilterMatchModes={false}
-          showAddButton={false}
-          showApplyButton={false}
-          showClearButton={false}
-        />
-        <Column
-          field='equipment'
-          header='Оборудование'
-          style={{ width: '20%' }}
-        />
-        <Column field='message' header='Сообщение' style={{ width: '28%' }} />
-        <Column
-          field='executor'
-          header='Ответственный'
-          style={{ width: '22%' }}
-          filter
-          showFilterMenu
-          filterElement={executorRowFilterTemplate}
-          showFilterMatchModes={false}
-          showAddButton={false}
-          showApplyButton={false}
-          showClearButton={false}
-        />
-      </DataTable>
+
+      {pageFormat === 'Таблица' && (
+        <DataTable
+          filters={filters}
+          value={logs}
+          rowClassName={rowClass}
+          showGridlines
+          paginator
+          rows={5}
+          rowsPerPageOptions={[5, 10]}
+          sortField='time'
+          sortOrder={-1}
+          tableStyle={{ width: '100%' }}
+          emptyMessage='Событий не найдено'
+          selection={selectedLog}
+          onSelectionChange={onSelectionChange}
+          dataKey='id'
+          selectionMode='single'
+          metaKeySelection={true}
+          style={{
+            minHeight: '80vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            border: '1px solid LightGray',
+          }}
+          filterIcon={PrimeIcons.FILTER}>
+          <Column
+            field='time'
+            header='Дата'
+            style={{ width: '10%' }}
+            sortable
+          />
+          <Column
+            field='degree'
+            header='Важность'
+            body={degreeCellTemplate}
+            style={{ width: '20%' }}
+            filter
+            showFilterMenu
+            filterElement={degreeRowFilterTemplate}
+            showFilterMatchModes={false}
+            showAddButton={false}
+            showApplyButton={false}
+            showClearButton={false}
+          />
+          <Column
+            field='equipment'
+            header='Оборудование'
+            style={{ width: '20%' }}
+          />
+          <Column field='message' header='Сообщение' style={{ width: '28%' }} />
+          <Column
+            field='executor'
+            header='Ответственный'
+            style={{ width: '22%' }}
+            filter
+            showFilterMenu
+            filterElement={executorRowFilterTemplate}
+            showFilterMatchModes={false}
+            showAddButton={false}
+            showApplyButton={false}
+            showClearButton={false}
+          />
+        </DataTable>
+      )}
+      {pageFormat === 'Карточки' && <div>gsgd</div>}
     </div>
   );
 };
