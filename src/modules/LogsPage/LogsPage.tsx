@@ -9,6 +9,7 @@ import './LogsPage.scss';
 import {
   degreeCellTemplate,
   executorFilterItemTemplate,
+  getDegreeTag,
   getExecutorsList,
   prepareLog,
   rowClass,
@@ -21,6 +22,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { PrimeIcons } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
 import { SelectButton } from 'primereact/selectbutton';
+import { DataView } from 'primereact/dataview';
+import { Tag } from 'primereact/tag';
+import { Card } from 'shared/components/Card';
 type DeegreeType = 'Высокая' | 'Критическая' | 'Низкая';
 type PageFormat = 'Таблица' | 'Карточки';
 
@@ -140,6 +144,7 @@ export const LogsPage = () => {
     );
   };
 
+
   return (
     <div className='logs'>
       <div className='logs__header'>
@@ -221,7 +226,16 @@ export const LogsPage = () => {
           />
         </DataTable>
       )}
-      {pageFormat === 'Карточки' && <div>gsgd</div>}
+      {pageFormat === 'Карточки' && (
+        <DataView
+          value={logs}
+          itemTemplate={(event:EventType) => <Card event ={event}/>}
+          layout={'grid'}
+          pt={{
+            grid: { className: 'surface-ground' },
+          }}
+        />
+      )}
     </div>
   );
 };
