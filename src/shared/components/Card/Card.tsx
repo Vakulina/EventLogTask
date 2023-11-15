@@ -1,32 +1,51 @@
+import { getDegreeTag } from 'shared/utils/getDegreeTag';
 import { Tag } from 'primereact/tag';
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import { EventType } from 'shared/types/Events';
 
 type PropsType = { event: EventType };
 
 export const Card: FC<PropsType> = ({ event }) => {
+/*
+
+  const onSelect = (event: Event) => {
+    setSelectedEvents([event]);
+    if (isCmdPressed || isControlPressed) onSelectionChangePressedCmd(event);
+  };*/
+
+  const clickCard = (e: MouseEventHandler<HTMLDivElement>) => {
+    console.log(e);
+  };
   return (
-    <div className='col-12 sm:col-6 lg:col-12 xl:col-4 p-4'>
-      <div className='p-4 border-1 surface-border surface-card border-round'>
-        <div className='flex flex-wrap align-items-center justify-content-between gap-2'>
-          <div className='flex align-items-center gap-2'>
-            <i className='pi pi-tag'></i>
-            <span className='font-semibold'>{event.degree}</span>
-          </div>
-          <Tag value={event.degree} severity={getDegreeTag(event.degree)}></Tag>
-        </div>
-        <div className='flex flex-column align-items-center gap-3 py-5'>
+    <article
+      className={`grid grid-cols-[105px_1fr_1fr] ${
+        event.isUnread ? 'bg-amber-200' : 'bg-amber-50 opacity-70'
+      } rounded-2xl p-2.5 px-3.5 box-border gap-2.5 gap-y-1.5 justify-items-start`}
+     >
+      <h4 className='text-sm'>Дата</h4>
+      <span className='text-sm font-semibold '>{event.time}</span>
+      <div className='row-start-1 row-end-3 col-start-3 col-end-4  text-sm self-center justify-self-center flex flex-col justify-center items-center gap-2'>
+        <div className='flex  overflow-hidden '>
           <img
-            className='w-9 shadow-2 border-round'
+            className='relative inline-block h-14 w-14 rounded-full border-2 border-white object-cover object-center hover:z-10 focus:z-10'
             src={event.photoUrl}
-            alt={event.message}
+            alt={event.executor}
           />
-          <div className='text-2xl font-bold'>{event.executor}</div>
         </div>
-        <div className='flex align-items-center justify-content-between'>
-          <span className='text-2xl font-semibold'>${event.time}</span>
-        </div>
+        <span className='text-sm font-bold'>{event.executor}</span>
       </div>
-    </div>
+      <h4 className='text-sm '>Важность</h4>
+      <Tag
+        value={event.degree}
+        severity={getDegreeTag(event.degree)}
+        className=' w-[110px] h-6 text-sm'></Tag>
+      <h4 className='text-sm '>Оборудование</h4>
+      <span className='text-sm font-semibold'>{event.equipment}</span>
+
+      <h4 className='text-sm col-start-1 col-end-2'>Сообщение</h4>
+      <span className='text-sm font-semibold col-start-2 col-end-4 text-left'>
+        {event.message}
+      </span>
+    </article>
   );
 };

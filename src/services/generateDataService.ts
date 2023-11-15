@@ -52,7 +52,7 @@ class GenerateDataService {
     const id = uuidv4();
     const message =
       this.messageList[this.getRandomNumber(0, this.messageList.length - 1)];
-    const photoUrl = faker.internet.avatar();
+    const photoUrl = faker.image.people(240, 240, true);
     const degree =
       this.degreeList[this.getRandomNumber(0, this.degreeList.length - 1)];
     const equipment =

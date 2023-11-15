@@ -29,18 +29,6 @@ export const getDegreeTag = (status: string) => {
   }
 };
 
-export const getDegreeValue = (status: string) => {
-  switch (status) {
-    case 'danger':
-      return 'Критическая';
-    case 'warning':
-      return 'Высокая';
-    case 'info':
-      return 'Низкая';
-    case 'renewal':
-      return null;
-  }
-};
 
 export const degreeCellTemplate = (rowData: EventType) => {
   return (

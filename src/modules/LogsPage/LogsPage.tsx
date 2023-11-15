@@ -9,7 +9,6 @@ import './LogsPage.scss';
 import {
   degreeCellTemplate,
   executorFilterItemTemplate,
-  getDegreeTag,
   getExecutorsList,
   prepareLog,
   rowClass,
@@ -23,7 +22,6 @@ import { PrimeIcons } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
 import { SelectButton } from 'primereact/selectbutton';
 import { DataView } from 'primereact/dataview';
-import { Tag } from 'primereact/tag';
 import { Card } from 'shared/components/Card';
 type DeegreeType = 'Высокая' | 'Критическая' | 'Низкая';
 type PageFormat = 'Таблица' | 'Карточки';
@@ -144,21 +142,21 @@ export const LogsPage = () => {
     );
   };
 
-
   return (
     <div className='logs'>
       <div className='logs__header'>
-        <InputText
-          value={filters.global.value}
-          onChange={(e) => onGlobalFilterChange('global', e?.target?.value)}
-          placeholder='Поиск'
-        />
-
         <SelectButton
           value={pageFormat}
           onChange={(e) => setPageFormat(e.value)}
           options={['Таблица', 'Карточки']}
         />
+        {pageFormat === 'Таблица' && (
+          <InputText
+            value={filters.global.value}
+            onChange={(e) => onGlobalFilterChange('global', e?.target?.value)}
+            placeholder='Поиск'
+          />
+        )}
       </div>
 
       {pageFormat === 'Таблица' && (
@@ -228,11 +226,17 @@ export const LogsPage = () => {
       )}
       {pageFormat === 'Карточки' && (
         <DataView
+          emptyMessage='Событий не найдено'
           value={logs}
-          itemTemplate={(event:EventType) => <Card event ={event}/>}
+          itemTemplate={(event: EventType) => <Card event={event} />}
           layout={'grid'}
+          paginator
+          rows={9}
           pt={{
-            grid: { className: 'surface-ground' },
+            grid: {
+              className:
+                'grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 p-2 height-[80vh]',
+            },
           }}
         />
       )}
