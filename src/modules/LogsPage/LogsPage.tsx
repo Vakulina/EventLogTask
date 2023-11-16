@@ -23,6 +23,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { SelectButton } from 'primereact/selectbutton';
 import { DataView } from 'primereact/dataview';
 import { Card } from 'shared/components/Card';
+import { DataViewCardsContext } from 'shared/components/DataViewCardsContext';
 type DeegreeType = 'Высокая' | 'Критическая' | 'Низкая';
 type PageFormat = 'Таблица' | 'Карточки';
 
@@ -64,7 +65,10 @@ export const LogsPage = () => {
   const [bindSpaceDown, unbindSpaceDown] = useEventListener({
     type: 'keydown',
     listener: (e) => {
-      if (e instanceof KeyboardEvent && e.code === 'Space') onKeyDown();
+      if (e instanceof KeyboardEvent && e.code === 'Space') {
+        e.preventDefault();
+        onKeyDown();
+      }
     },
   });
 
@@ -225,20 +229,26 @@ export const LogsPage = () => {
         </DataTable>
       )}
       {pageFormat === 'Карточки' && (
-        <DataView
-          emptyMessage='Событий не найдено'
-          value={logs}
-          itemTemplate={(event: EventType) => <Card event={event} />}
-          layout={'grid'}
-          paginator
-          rows={9}
-          pt={{
-            grid: {
-              className:
-                'grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 p-2 height-[80vh]',
-            },
-          }}
-        />
+        <DataViewCardsContext.Provider
+          value={{
+            setSelectedLog,
+            selectedLog,
+          }}>
+          <DataView
+            emptyMessage='Событий не найдено'
+            value={logs}
+            itemTemplate={(event: EventType) => <Card event={event} />}
+            layout={'grid'}
+            paginator
+            rows={9}
+            pt={{
+              grid: {
+                className:
+                  'grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 p-2 height-[80vh]',
+              },
+            }}
+          />
+        </DataViewCardsContext.Provider>
       )}
     </div>
   );

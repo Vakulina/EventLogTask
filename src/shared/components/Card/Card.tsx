@@ -1,27 +1,30 @@
 import { getDegreeTag } from 'shared/utils/getDegreeTag';
 import { Tag } from 'primereact/tag';
-import { FC, MouseEventHandler } from 'react';
+import { FC, useContext } from 'react';
 import { EventType } from 'shared/types/Events';
+import { DataViewCardsContext } from '../DataViewCardsContext';
 
 type PropsType = { event: EventType };
 
 export const Card: FC<PropsType> = ({ event }) => {
-/*
+  const { setSelectedLog, selectedLog } = useContext(DataViewCardsContext);
 
-  const onSelect = (event: Event) => {
-    setSelectedEvents([event]);
-    if (isCmdPressed || isControlPressed) onSelectionChangePressedCmd(event);
-  };*/
-
-  const clickCard = (e: MouseEventHandler<HTMLDivElement>) => {
-    console.log(e);
+  const clickCard = () => {
+    if (setSelectedLog) setSelectedLog(event);
   };
+
   return (
     <article
       className={`grid grid-cols-[105px_1fr_1fr] ${
-        event.isUnread ? 'bg-amber-200' : 'bg-amber-50 opacity-70'
-      } rounded-2xl p-2.5 px-3.5 box-border gap-2.5 gap-y-1.5 justify-items-start`}
-     >
+        event.isUnread
+          ? 'bg-amber-200 cursor-pointer'
+          : 'bg-amber-50 opacity-70'
+      } ${
+        selectedLog && selectedLog.id === event.id && event.isUnread
+          ? 'outline outline-3 outline-gray'
+          : ''
+      } rounded-2xl p-2.5 px-3.5 box-border gap-2.5 gap-y-1.5 justify-items-start `}
+      onClick={clickCard}>
       <h4 className='text-sm'>Дата</h4>
       <span className='text-sm font-semibold '>{event.time}</span>
       <div className='row-start-1 row-end-3 col-start-3 col-end-4  text-sm self-center justify-self-center flex flex-col justify-center items-center gap-2'>
