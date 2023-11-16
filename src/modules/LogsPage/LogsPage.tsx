@@ -5,7 +5,6 @@ import {
   DataTableSelectionSingleChangeEvent,
 } from 'primereact/datatable';
 import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
-import './LogsPage.scss';
 import {
   degreeCellTemplate,
   executorFilterItemTemplate,
@@ -147,8 +146,8 @@ export const LogsPage = () => {
   };
 
   return (
-    <div className='logs'>
-      <div className='logs__header'>
+    <div className='flex flex-col justify-between gap-5 h-screen w-full box-border'>
+      <div className='flex justify-between'>
         <SelectButton
           value={pageFormat}
           onChange={(e) => setPageFormat(e.value)}

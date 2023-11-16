@@ -10,9 +10,15 @@ export const prepareLog = (log: EventDTO): EventType => {
     isUnread: true,
   };
 };
+/*h-[12vh] opacity-60 bg-amber-200 cursor-none focus-visible:outline-none 
+focus:text-grey opacity-100 cursor-pointer focus:[outline outline-3 outline-gray outline-offset-2] logs__row p-selectable-row*/
+
 export const rowClass = (data: EventType) => {
   return {
-    'logs__row_bg-primary': data.isUnread,
+    'h-[12vh] bg-amber-200  focus:text-grey': true,
+    'opacity-100 cursor-pointer focus:outline focus:outline-3 focus:outline-gray outline-offset-[-0.25rem]':
+      data.isUnread,
+    'opacity-60 cursor-none focus-visible:outline-none': !data.isUnread,
     logs__row: true,
   };
 };
@@ -28,7 +34,6 @@ export const getDegreeTag = (status: string) => {
       return null;
   }
 };
-
 
 export const degreeCellTemplate = (rowData: EventType) => {
   return (

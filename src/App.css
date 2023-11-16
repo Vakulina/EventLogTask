@@ -23,6 +23,3 @@
 body {
   font-family: var(--font-family);
 }
-:root {
-  --bg-primary: rgba(255, 204, 0, 0.471);
-}
