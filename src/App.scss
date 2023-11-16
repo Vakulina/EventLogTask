@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+#root {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 20px;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  @media (max-width: 700px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+body {
+  font-family: var(--font-family);
+}
+
+.p-paginator {
+  @media (max-width: 700px) {
+    font-size: 12px;
+  }
+  .p-dropdown {
+    @media (max-width: 700px) {
+      display: none;
+    }
+  }
+}
+.p-column-filter-menu {
+  @media (max-width: 700px) {
+    button {
+      height: 18px;
+      width: 14px;
+    }
+    span::before {
+      font-size: 12px;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { PrimeReactProvider } from 'primereact/api';
 import { ErrorBoundary } from 'shared/components/ErrorBoundary';
 import { LogsPage } from 'modules/LogsPage';

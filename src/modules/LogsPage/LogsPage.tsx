@@ -146,18 +146,27 @@ export const LogsPage = () => {
   };
 
   return (
-    <div className='flex flex-col justify-between gap-5 h-screen w-full box-border'>
+    <div className='flex flex-col justify-start gap-3 h-screen w-full box-border py-5 '>
       <div className='flex justify-between'>
         <SelectButton
           value={pageFormat}
-          onChange={(e) => setPageFormat(e.value)}
+          onChange={(e) => {
+            if (e.value) setPageFormat(e.value);
+          }}
           options={['Таблица', 'Карточки']}
+          unstyled={false}
+          pt={{
+            button: {
+              className: 'px-2 py-1 font-normal',
+            },
+          }}
         />
         {pageFormat === 'Таблица' && (
           <InputText
             value={filters.global.value}
             onChange={(e) => onGlobalFilterChange('global', e?.target?.value)}
             placeholder='Поиск'
+            className='p-inputtext-sm px-2 py-1'
           />
         )}
       </div>
@@ -191,14 +200,17 @@ export const LogsPage = () => {
           <Column
             field='time'
             header='Дата'
-            style={{ width: '10%' }}
+            className='w-[10%] sm:text-sm xs:p-1.5 xs:text-xs'
+            headerClassName='w-[10%] sm:text-sm xs:p-1.5 xs:p-1.5 xs:text-xs'
             sortable
           />
           <Column
             field='degree'
             header='Важность'
+            headerClassName='sm:text-sm xs:p-1.5 xs:text-xs'
+            bodyClassName='sm:text-sm xs:p-1.5 xs:text-xs'
             body={degreeCellTemplate}
-            style={{ width: '20%' }}
+            className='w-24'
             filter
             showFilterMenu
             filterElement={degreeRowFilterTemplate}
@@ -206,17 +218,27 @@ export const LogsPage = () => {
             showAddButton={false}
             showApplyButton={false}
             showClearButton={false}
-          />
+            />
           <Column
             field='equipment'
             header='Оборудование'
             style={{ width: '20%' }}
+            headerClassName='sm:text-sm xs:p-1.5 xs:text-xs'
+            bodyClassName='sm:text-sm xs:p-1.5 xs:text-xs'
           />
-          <Column field='message' header='Сообщение' style={{ width: '28%' }} />
+          <Column
+            field='message'
+            header='Сообщение'
+            style={{ width: '28%' }}
+            headerClassName='sm:text-sm xs:p-1.5 xs:text-xs'
+            bodyClassName='sm:text-sm xs:p-1.5 xs:text-xs'
+          />
           <Column
             field='executor'
             header='Ответственный'
             style={{ width: '22%' }}
+            headerClassName='sm:text-sm sm:p-1.5 xs:text-xs sm:p-1.5'
+            bodyClassName='sm:text-sm sm:p-1.5s  xs:text-xs xs:text-x'
             filter
             showFilterMenu
             filterElement={executorRowFilterTemplate}
@@ -243,7 +265,7 @@ export const LogsPage = () => {
             pt={{
               grid: {
                 className:
-                  'grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 p-2 height-[80vh]',
+                  'grid-cols-2 gap-5 xs:grid-cols-1 sm:grid-cols-2  lg:grid-cols-2 xl:grid-cols-3 p-2 height-[80vh]',
               },
             }}
           />

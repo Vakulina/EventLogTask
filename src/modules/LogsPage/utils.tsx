@@ -1,4 +1,5 @@
 import { Tag } from 'primereact/tag';
+import { classNames } from 'primereact/utils';
 import { EventDTO } from 'shared/models';
 import { EventType } from 'shared/types/Events';
 
@@ -10,9 +11,6 @@ export const prepareLog = (log: EventDTO): EventType => {
     isUnread: true,
   };
 };
-/*h-[12vh] opacity-60 bg-amber-200 cursor-none focus-visible:outline-none 
-focus:text-grey opacity-100 cursor-pointer focus:[outline outline-3 outline-gray outline-offset-2] logs__row p-selectable-row*/
-
 export const rowClass = (data: EventType) => {
   return {
     'h-[12vh] bg-amber-200  focus:text-grey': true,
@@ -39,11 +37,13 @@ export const degreeCellTemplate = (rowData: EventType) => {
   return (
     <Tag
       value={rowData.degree}
+      className='xs:text-sm xs:p-1.5 xs:text-xs'
       severity={getDegreeTag(rowData.degree)}
       rounded
     />
   );
 };
+
 export const executorFilterItemTemplate = (option: string) => {
   return (
     <div className='flex align-items-center gap-2'>
