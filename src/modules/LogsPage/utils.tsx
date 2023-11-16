@@ -1,5 +1,4 @@
 import { Tag } from 'primereact/tag';
-import { classNames } from 'primereact/utils';
 import { EventDTO } from 'shared/models';
 import { EventType } from 'shared/types/Events';
 

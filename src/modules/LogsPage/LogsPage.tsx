@@ -179,7 +179,6 @@ export const LogsPage = () => {
           showGridlines
           paginator
           rows={5}
-          rowsPerPageOptions={[5, 10]}
           sortField='time'
           sortOrder={-1}
           tableStyle={{ width: '100%' }}
